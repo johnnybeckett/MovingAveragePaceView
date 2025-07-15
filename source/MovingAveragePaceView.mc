@@ -2,11 +2,14 @@ import Toybox.Activity;
 import Toybox.Lang;
 import Toybox.Time;
 import Toybox.WatchUi;
+import Toybox.System;
+
 
 class MovingAveragePaceView extends WatchUi.SimpleDataField {
     var previous_pace;
     var a_coefficient;
     var b_coefficient;
+    var conversion_factor;
 
     // Set the label of the data field here.
     function initialize() {
@@ -15,6 +18,7 @@ class MovingAveragePaceView extends WatchUi.SimpleDataField {
         previous_pace = 0.0;
         b_coefficient = 0.97;
         a_coefficient = 1.0 - b_coefficient;
+        conversion_factor = (getApp().getProperty("useImperial") == true) ? 26.8224 : 16.6666666667;
     }
 
     // Convert the current time in minutes per km to display format
@@ -32,11 +36,11 @@ class MovingAveragePaceView extends WatchUi.SimpleDataField {
         {
             var speed = info.currentSpeed; // m/s
             if (speed > 0.0) {
-                // speed_km/min = (speed_m/s / 1000) / 60
-                var pace = 16.6666666667 / info.currentSpeed;  // m/km   as (1.0 / speed_in_km_per_minute)
-                if ((pace >= 20.0) || (pace < 2.0)) {
+                if ((speed < 0.6) || (speed > 8.5)) {
                     return "##:##";
                 } else {
+                   // speed_km/min = (speed_m/s / 1000) / 60
+                    var pace = conversion_factor / info.currentSpeed;  // m/km   as (1.0 / speed_in_km_per_minute)
                     if (0.0 == previous_pace) {
                         previous_pace = pace;
                     } else {

@@ -1,0 +1,5 @@
+<settings>
+    <setting propertyKey="useImperial" title="Use Imperial Units">
+        <settingConfig type="boolean"  />
+    </setting>
+</settings>

@@ -1,0 +1,4 @@
+<properties>
+  <property id="AppVersion" type="string">0.0.3</property>
+  <property id="useImperial" type="boolean">false</property>
+</properties>
